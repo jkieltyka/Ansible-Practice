@@ -1,0 +1,32 @@
+--- # outline to playbook translation
+- hosts: apacheweb
+  user: test
+  sudo: yes
+  gather_facts: no
+  tasks:
+  - name: date/time stamp when playbook starts
+    command: /usr/bin/date
+    register: timestamp_start
+  - debug: var=timestamp_start
+  - name: install apache webserver
+    yum: pkg=httpd state=latest
+    notify: Start HTTPD
+  - name: verify the web server is running
+    command: systemctl status httpd
+    register: result
+  - debug: var=result
+  - name: install client software telnet
+    yum: pkg=telnet state=latest
+  - name: install lynxs
+    yum: pkg=lynx state=latest
+  - name: log all the packages installed on the system
+    command: yum list installed
+    register: installed_result
+  - debug: var=installed_result
+  - name: date and time stamp for when the playbookends
+    command: /usr/bin/date
+    register: timestamp_end
+  - debug: var=timestamp_end 
+  handlers:
+  - name: Start HTTPD
+    service: name=httpd state=restarted

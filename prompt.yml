@@ -1,0 +1,17 @@
+--- # LOOP PLAYBOOK EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  vars:
+    playbook_version: 0.1b
+  vars_prompt:
+    - name: pkgtoinstall
+      prompt: Install Which Package?
+      default: telnet
+      private: no
+  tasks:
+    - name: Install the indictated packed
+      yum: pkg={{ pkgtoinstall }} state=latest

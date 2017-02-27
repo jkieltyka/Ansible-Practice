@@ -1,0 +1,12 @@
+--- # LOCACLACTION DEMO
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  tasks:
+  - name: Ping application server before we run install
+    local_action: command ping -c 4 172.31.36.238
+  - name: install lynx on remote server
+    yum: pkg=lynx state=latest

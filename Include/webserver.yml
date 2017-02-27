@@ -1,0 +1,13 @@
+--- # WEB PLAYBOOK
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  vars_files:
+    - varaibles/variables.yml
+  tasks:
+    - include: packages/packages.yml
+    - include: commands/commands.yml
+  handlers:
+    - include: handlers/handlers.yml        
