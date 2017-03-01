@@ -1,0 +1,14 @@
+--- # wait for module
+- hosts: apacheweb
+  become: true
+  become_method: sudo
+  gather_facts: no
+  tasks:
+    - name: Installing Apache Tomcat
+      action: yum name=tomcat state=installed
+    - name: Waiting for 8080 to listen
+      wait_for:
+        port: 8080
+        state: started
+    - name: install lynx
+      yum: pkg=lynx state=present
