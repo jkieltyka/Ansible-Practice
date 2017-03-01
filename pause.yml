@@ -1,0 +1,14 @@
+--- # PAUSE MODLUE
+- hosts: apacheweb
+  become: true
+  become_method: sudo
+  gather_facts: no
+  connection: ssh
+  tasks:
+    - name: Install Httpd
+      yum: pkg=httpd state=latest
+    - name: pausing 
+      pause:
+        prompt: "Make sure the installation is complete.."
+    - name: Verify lynx installation
+      yum: pkg=lynx state=present
