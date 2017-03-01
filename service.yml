@@ -1,0 +1,14 @@
+--- # SERVICE MODULE EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  tasks:
+  - name: Install web server
+    yum: pkg=httpd  state=installed
+  - name: start the webserver
+    service: name=httpd state=started
+  - name: Enable HTTPD after reboot
+    service: name=httpd enabled=yes
