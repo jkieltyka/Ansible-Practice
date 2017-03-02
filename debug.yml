@@ -1,0 +1,15 @@
+--- # DEBUG EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  tasks:
+  - name: Install the webserver
+    yum: pkg=httpd state=installed
+  - debug: msg="Equivilant of sudo yum install httpd"
+  - name: how long has the server been up
+    shell: /usr/bin/uptime
+    register: result
+  - debug: var=result

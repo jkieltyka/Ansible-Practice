@@ -1,0 +1,10 @@
+--- # fetch example
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  tasks:
+  - name: copy remote host file to control server
+    fetch: src=/etc/hosts dest=/home/test/prefix-{{ ansible_hostname }} flat=yes
