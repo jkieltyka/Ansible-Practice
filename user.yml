@@ -1,0 +1,10 @@
+--- # USER MODULE
+- hosts: apachesweb
+  become: true
+  become_method: sudo
+  connection: ssh
+  user: test
+  gather_facts: no
+  tasks:
+   - name: Add the user test apache to the apache web client
+     user: name=testapache2 comment="Apache Test" uid=3030 group=wheel shell=/bin/bash
