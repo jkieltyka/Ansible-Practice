@@ -1,0 +1,16 @@
+--- # SET FACT EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: true
+  vars:
+   playbook_version: 0.1
+  tasks:
+   - name: local variable display
+     set_fact:
+       singlefact: SOMETHING
+   - debug: msg={{ playbook_version }}
+   - debug: msg={{ singlefact }}
+    

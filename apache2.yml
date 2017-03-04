@@ -1,0 +1,10 @@
+--- # APACHE2 MODULE EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  tasks:
+  - name: Disable the alias mdoule in APACHE2 
+    apache2_module: state=absent name=alias
+    

@@ -1,0 +1,10 @@
+--- # DNF MODULE EXAMPLE
+- hosts: apacheweb
+  become: true
+  become_method: sudo
+  user: test
+  gather_facts: no
+  connection: ssh
+  tasks:
+  - name: install apache
+    dnf: name=httpd state=latest

@@ -1,0 +1,14 @@
+--- # STAT MODULE EXAMPLe
+- hosts: apacheweb
+  user: test
+  connection: ssh
+  become: true
+  become_method: sudo
+  gather_facts: no
+  tasks:
+   - name: Does a file/directory exist in the ppath
+     stat: path=/home/test/abc
+     register: p
+   - debug: msg="the path exists and is a directory"
+     when: p.stat.isdir is defined and p.stat.isdir
+     

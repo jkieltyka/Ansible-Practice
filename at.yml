@@ -1,0 +1,10 @@
+--- # AT MODULE EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  tasks:
+  - name: Run a command at
+    at: command="ls /var/log > /home/test/at1.log" state=absent

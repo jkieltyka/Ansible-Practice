@@ -1,0 +1,10 @@
+--- #SCRIPT MODULE EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  tasks:
+   - name: Run a script
+     script: /usr/bin/uptime creates=/home/test/uptime.log
