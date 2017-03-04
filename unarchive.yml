@@ -1,0 +1,10 @@
+--- # Unarchive MODULE EXAMPLE
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  tasks:
+   - name: copy and unarchieve a file
+     unarchive: src=test.tar.gz dest=/home/test/unarchieve

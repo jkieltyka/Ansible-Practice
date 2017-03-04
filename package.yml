@@ -1,0 +1,10 @@
+--- # PACKAGE MODULE EXAMPLE
+- hosts: apacheweb
+  user: testi
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  tasks:
+   - name: install a package on a remote system
+     package: name=telnet state=present
