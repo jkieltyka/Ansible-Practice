@@ -1,14 +1,14 @@
---- # Testing the J2 Template Module
-- hosts: apacheweb:RedHat
-  connection: ssh
-  user: test
+--- # TEMPLATE MODULE EXAMPLE
+- hosts: apacheweb
   become: true
   become_method: sudo
-  gather_facts: true
+  user: test
+  connection: ssh
+  gather_facts: yes 
   vars:
     userName: test
     userPassword: password123
     connectionType: SFTP
   tasks:
-    - name: Install the configuration file for the system
-      template: src=files/test.conf.j2 dest=/home/test/test.conf owner=test group=test mode=750
+   - name: Install the custom config file
+     template: src=files/test.conf.j2 dest=/home/test/test.conf owner=test group=test mode=750
