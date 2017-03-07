@@ -1,0 +1,16 @@
+--- # Master Playbook demonstrating the delegateto command
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  pre_tasks:
+   - name: ping the application server
+     raw: ping -c 5 jkieltyka5 > /home/test/ping.out
+     delegate_to: 127.0.0.1
+  roles:
+  - { role: redhat_webservers, when: ansible_os_family == "RedHat"}
+  post_tasks:
+   - name: When did the ROLE end
+     raw: date > /home/test/endofrole.log
+
