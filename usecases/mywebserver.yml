@@ -1,0 +1,33 @@
+--- # Build an apacheweb server
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  vars:
+    apache_pkg: httpd
+    distribution: redhat
+    apache_version: 2.4
+    apache_dir: /var/www/sample
+    apache_fqdn: jkieltyka2.mylabserver.com
+  tasks:
+   - name: install the web server package
+     yum: pkg=httpd state=latest
+   - name: create the web server directory
+     file: path=/var/www/sample state=directory mode=644
+   - name: copy the apache web configuration file to remote host
+     copy: src=files/httpd.conf.template dest=/etc/httpd.conf owner=root group=root mode=644
+   - name: create the vhost.d directory on the remote host
+     file: path=/etc/httpd/vhost.d state=directory mode=644
+   - name: copy and untar the source for the site
+     unarchive: src=files/sitecode.tar.gz dest=/var/www/sample
+   - name: Copy the default chost configuration
+     copy: src=files/default.conf.template dest=/etc/httpd/vhost.d/default.conf owner=root group=root mode=644
+   - name: start the webserver
+     service: name=httpd state=started
+   - name: test the webserver
+     shell: curl http://jkieltyka2.mylabserver.com
+     register: result
+   - name: print result
+     debug: var=result
