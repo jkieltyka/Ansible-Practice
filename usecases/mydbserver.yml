@@ -1,0 +1,38 @@
+--- # Install and Configure a DB server
+- hosts: appserver
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  vars:
+    dbserver_pkg: mariadb-server
+    dbclient_pkg: mariadb
+    dbserver_fqdn: jkieltyka5.mylabserver.com
+    dbinstalldir: /var/lib
+    dbinstancename: MyDBTest
+    dbversion: 5.5.44
+  tasks:
+  - name: Install the MariaDB server
+    yum: pkg=mariadb-server state=latest
+  - name: Install the MariaDB Client utils
+    yum: pkg=mariadb state=latest
+  - name: Start the DB service
+    service: name=mariadb state=started
+  - pause: prompt="please run the mysql_secure_installation binary and then press ENTER for the playbook to continue"
+  - name: Restart the DB server
+    service: name=mariadb state=restarted
+  - name: Copy the remote DB in order to restore
+    copy: src=files/mysqlbkup.sql dest=/var/lib/mysqlbkup.sql owner=root group=root mode=755
+  - name: create the remote database instance
+    shell: mysqladmin -u root -ppassword123 create MyDBTest
+    ignore_errors: yes
+#  - name: Import tyhe db backup to the live DB
+#    shell: mysql -u root -ppassword123 MyDBTest < /var/lib/mysqlbkup.sql
+  - debug: var=result
+  - name: Add a backup cron job to run everyday at midnight
+    cron: name="DBBackup" minute="0" hour="0" job="mysqldump -u root -ppassword123 --database MyDBTest > dbbkup.sql"
+  - name: Run a quick SQL command to be sure everything is working
+    shell: mysql -u root -ppassword123 -e 'SHOW DATABASES;'
+    register: mysqlresult
+  - debug: var=mysqlresult

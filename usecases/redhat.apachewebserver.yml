@@ -1,0 +1,10 @@
+--- # MASTER PLAYBOOK Build an apacheweb server
+- hosts: apacheweb
+  user: test
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  roles:
+  - role: redhat.apachewebserver
+   
